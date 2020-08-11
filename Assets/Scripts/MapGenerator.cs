@@ -2,18 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class MapGenerator : MonoBehaviour
+public class MapGenerator
 {
-
-    void Start()
+    public GeneratedMap Generate()
     {
-        
-    }
-
-
-    void Update()
-    {
-        
+        var map = new GeneratedMap.MapInTheMaking();
+        //雑
+        map.tiles = Enumerable.Repeat(
+                        Enumerable.Repeat(
+                            TileType.Aisle,
+                            5
+                        ).ToList(),
+                        5
+                    ).ToList();
+        return new GeneratedMap(map);
     }
 }
