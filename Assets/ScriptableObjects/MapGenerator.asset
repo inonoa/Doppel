@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912e01ebf6a2f99498af39df0c67fce6, type: 3}
   m_Name: MapGenerator
   m_EditorClassIdentifier: 
-  mapSize: {x: 30, y: 30}
-  gridSize: {x: 6, y: 6}
+  mapSize: {x: 50, y: 36}
+  gridSize: {x: 10, y: 17}

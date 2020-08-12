@@ -15,21 +15,26 @@ public class MapGenerator : ScriptableObject
 
     public GeneratedMap Generate()
     {
-        var map = FilledMap(mapSize, TileType.Aisle);
+        var map = FilledMap(mapSize, TileType.Wall);
 
         DividedGrid[,] divided = DivideGrid(map);
         
         foreach(DividedGrid gridUnit in divided)
         {
-            for(int i = gridUnit.leftUpBound.x; i < gridUnit.leftUpBound.x + gridUnit.size.x; i ++)
+            Vector2Int lu = new Vector2Int();
+            lu.x = Random.Range(gridUnit.leftUpBound.x + 1, gridUnit.rightDownBound.x - 3);
+            lu.y = Random.Range(gridUnit.leftUpBound.y + 1, gridUnit.rightDownBound.y - 3);
+            
+            Vector2Int rd = new Vector2Int();
+            rd.x = Random.Range(lu.x + 2, gridUnit.rightDownBound.x - 1);
+            rd.y = Random.Range(lu.y + 2, gridUnit.rightDownBound.y - 1);
+
+            for(int i = lu.x; i < rd.x + 1; i++)
             {
-                map.tiles[gridUnit.leftUpBound.y][i] = TileType.Wall;
-                map.tiles[gridUnit.leftUpBound.y + gridUnit.size.y - 1][i] = TileType.Wall;
-            }
-            for(int i = gridUnit.leftUpBound.y; i < gridUnit.leftUpBound.y + gridUnit.size.y; i ++)
-            {
-                map.tiles[i][gridUnit.leftUpBound.x] = TileType.Wall;
-                map.tiles[i][gridUnit.leftUpBound.x + gridUnit.size.x - 1] = TileType.Wall;
+                for(int j = lu.y; j < rd.y + 1; j ++)
+                {
+                    map.tiles[j][i] = TileType.Aisle;
+                }
             }
         }
 
@@ -44,7 +49,7 @@ public class MapGenerator : ScriptableObject
             map.tiles.Add(new List<TileType>());
             foreach (int j in Enumerable.Range(0, mapSize.x))
             {
-                map.tiles.Last().Add(TileType.Aisle);
+                map.tiles.Last().Add(type);
             }
         }
         return map;
@@ -65,7 +70,7 @@ public class MapGenerator : ScriptableObject
             for(int j = num_grid.y - 1; j > -1; j --)
             {
                 int up = Mathf.RoundToInt(Mathf.Lerp(0, map.tiles.Count, j / (float)num_grid.y));
-                ans[i, j] = new DividedGrid(new Vector2Int(left, up), new Vector2Int(prev_right - left, prev_down - up));
+                ans[i, j] = new DividedGrid(new Vector2Int(left, up), new Vector2Int(prev_right - 1, prev_down - 1));
                 prev_down = up;
             }
             prev_right = left;
@@ -77,11 +82,11 @@ public class MapGenerator : ScriptableObject
     public class DividedGrid
     {
         public readonly Vector2Int leftUpBound;
-        public readonly Vector2Int size;
+        public readonly Vector2Int rightDownBound;
 
-        public DividedGrid(Vector2Int leftUpBound, Vector2Int size)
+        public DividedGrid(Vector2Int leftUpBound, Vector2Int rightDownBound)
         {
-            (this.leftUpBound, this.size) = (leftUpBound, size);
+            (this.leftUpBound, this.rightDownBound) = (leftUpBound, rightDownBound);
         }
     }
 }

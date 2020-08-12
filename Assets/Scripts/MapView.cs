@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 public class MapView : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class MapView : MonoBehaviour
     [SerializeField] MapGenerator generator;
 
     void Start()
+    {
+        GenerateFromView();
+    }
+
+    [Button]
+    void GenerateFromView()
     {
         string txt = "";
         IReadOnlyList<IReadOnlyList<TileType>> map = generator.Generate().Tiles;
