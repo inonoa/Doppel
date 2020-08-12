@@ -14,8 +14,8 @@ public static class TileTypeExtension
     {
         switch (type)
         {
-        case TileType.Aisle: return '_';
-        case TileType.Wall:  return 'W';
+        case TileType.Aisle: return ' ';
+        case TileType.Wall:  return '■';
         case TileType.Stair: return 'L';
         default:             return 'X';
         }
