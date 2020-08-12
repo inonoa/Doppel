@@ -8,11 +8,12 @@ using System.Linq;
 public class MapView : MonoBehaviour
 {
     [SerializeField] Text text;
+    [SerializeField] MapGenerator generator;
 
     void Start()
     {
         string txt = "";
-        IReadOnlyList<IReadOnlyList<TileType>> map = new MapGenerator().Generate().Tiles;
+        IReadOnlyList<IReadOnlyList<TileType>> map = generator.Generate().Tiles;
 
         foreach(IReadOnlyList<TileType> row in map)
         {
