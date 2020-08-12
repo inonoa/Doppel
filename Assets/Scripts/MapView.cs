@@ -18,7 +18,7 @@ public class MapView : MonoBehaviour
         {
             foreach(TileType tile in row)
             {
-                txt += tile.ToString().First();
+                txt += tile.ToDebugChar() + " ";
             }
             txt += "\n";
         }
