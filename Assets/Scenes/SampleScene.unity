@@ -308,6 +308,7 @@ GameObject:
   - component: {fileID: 1875772245}
   - component: {fileID: 1875772244}
   - component: {fileID: 1875772243}
+  - component: {fileID: 1875772246}
   m_Layer: 5
   m_Name: MapDebugView
   m_TagString: Untagged
@@ -347,7 +348,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1875772244}
-  generator: {fileID: 11400000, guid: bf3853b14e4e02d45ac21fa6dd2c64b4, type: 2}
 --- !u!114 &1875772244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +388,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875772241}
   m_CullTransparentMesh: 0
+--- !u!114 &1875772246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875772241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d03c35accb70af49946b19c139d560c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generator: {fileID: 11400000, guid: bf3853b14e4e02d45ac21fa6dd2c64b4, type: 2}
+  debugView: {fileID: 1875772243}
 --- !u!1 &1901034626
 GameObject:
   m_ObjectHideFlags: 0
