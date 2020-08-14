@@ -17,13 +17,30 @@ public class TurnController : SerializedMonoBehaviour
         status.hero.OnStartMove.Subscribe(dir => {
             status.doppels.ForEach(dp => dp.Move());
         });
+
+        StartCoroutine(ProcTurns());
     }
 
-    void Update()
+    HeroMover.Direction? GetInput()
     {
-        if(Input.GetKeyDown(KeyCode.RightArrow)) status.hero.TryMove(HeroMover.Direction.R);
-        if(Input.GetKeyDown(KeyCode.LeftArrow )) status.hero.TryMove(HeroMover.Direction.L);
-        if(Input.GetKeyDown(KeyCode.UpArrow   )) status.hero.TryMove(HeroMover.Direction.U);
-        if(Input.GetKeyDown(KeyCode.DownArrow )) status.hero.TryMove(HeroMover.Direction.D);
+        if(Input.GetKeyDown(KeyCode.RightArrow)) return HeroMover.Direction.R;
+        if(Input.GetKeyDown(KeyCode.LeftArrow )) return HeroMover.Direction.L;
+        if(Input.GetKeyDown(KeyCode.UpArrow   )) return HeroMover.Direction.U;
+        if(Input.GetKeyDown(KeyCode.DownArrow )) return HeroMover.Direction.D;
+        return null;
+    }
+
+    IEnumerator ProcTurns()
+    {
+        HeroMover.Direction? heroDir = GetInput();
+
+        while(true)
+        {
+            yield return new WaitUntil(() => (heroDir = GetInput()) != null);
+
+            status.hero.TryMove(heroDir.Value);
+
+            yield return null;
+        }
     }
 }

@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using Sirenix.OdinInspector;
 
 public class HeroMover : MonoBehaviour
 {
     public enum Direction{ L, R, U, D }
 
+    [field: SerializeField] [field: LabelText("Position On Map")] [field: ReadOnly]
     public Vector2Int PosOnMap{ get; private set; }
 
     public void Init(Vector2Int posOnMap)
