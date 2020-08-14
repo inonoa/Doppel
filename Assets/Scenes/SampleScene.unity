@@ -414,6 +414,8 @@ MonoBehaviour:
       Entry: 10
       Data: 0
   generator: {fileID: 11400000, guid: bf3853b14e4e02d45ac21fa6dd2c64b4, type: 2}
+  heroPrefab: {fileID: 3340755850908411928, guid: 67acc46102ba87341b6bf2d1da8e8ea6,
+    type: 3}
 --- !u!1 &1901034626
 GameObject:
   m_ObjectHideFlags: 0
