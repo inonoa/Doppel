@@ -21,8 +21,12 @@ public class GridUnit
         (this.leftUp, this.rightDown) = (leftUpBound, rightDownBound);
     }
 
-    //一辺を完全に共有しているときのみtrue
-    public bool IsNextTo(GridUnit other)
+    public enum Direction
+    {
+        None, Right, Left, Up, Down
+    }
+
+    public bool CanCombine(GridUnit other)
     {
         bool leftIsNext  = this.Left    == other.Right + 1;
         bool rightIsNext = this.Right   == other.Left    - 1;
@@ -41,6 +45,34 @@ public class GridUnit
         }
 
         return false;
+    }
+
+    //一辺を完全に共有しているときのみtrue
+    public Direction GetAdjacent(GridUnit other)
+    {
+        if(this.Left == other.Right + 1 && Intersect(this.Up, this.Down, other.Up, other.Down))
+        {
+            return Direction.Left;
+        }
+        if(this.Right == other.Left - 1 && Intersect(this.Up, this.Down, other.Up, other.Down))
+        {
+            return Direction.Right;
+        }
+        if(this.Up == other.Down + 1 && Intersect(this.Left, this.Right, other.Left, other.Right))
+        {
+            return Direction.Up;
+        }
+        if(this.Down == other.Up - 1 && Intersect(this.Left, this.Right, other.Left, other.Right))
+        {
+            return Direction.Down;
+        }
+
+        return Direction.None;
+
+        bool Intersect(int left1, int right1, int left2, int right2)
+        {
+            return ! (left1 > right2 || right1 < left2);
+        }
     }
 
     public GridUnit Combine(GridUnit other)

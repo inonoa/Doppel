@@ -95,7 +95,7 @@ public class MapGenerator : ScriptableObject
         {
             foreach(GridUnit grid2 in grids)
             {
-                if(!combined.Contains(grid1) && !combined.Contains(grid2) && grid1.IsNextTo(grid2))
+                if(!combined.Contains(grid1) && !combined.Contains(grid2) && grid1.CanCombine(grid2))
                 {
                     if(Random.Range(0f, 1f) > 0.1f) continue;
 
