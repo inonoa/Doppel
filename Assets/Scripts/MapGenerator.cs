@@ -36,13 +36,14 @@ public class MapGenerator : ScriptableObject
             room.Apply(map);
         }
 
-        foreach(Room roomSrc in rooms)
-        {
-            foreach(Room roomDst in rooms)
-            {
-                LayRoad(map, roomSrc, roomDst);
-            }
-        }
+        divided.ForEachCombi((gr1, gr2) => TryLayRoad(map, gr1, gr2));
+
+        Room stairRoom = rooms.ElementAt(Random.Range(0, rooms.Count - 1));
+        Vector2Int stairCoord = new Vector2Int(
+                                    Random.Range(stairRoom.Left + 1, stairRoom.Right - 1),
+                                    Random.Range(stairRoom.Up   + 1, stairRoom.Down  - 1)
+                                );
+        map.tiles[stairCoord.y][stairCoord.x] = TileType.Stair;
 
         return new GeneratedMap(map);
     }
@@ -109,9 +110,90 @@ public class MapGenerator : ScriptableObject
         foreach(var grid in combinedLarge) grids.Add(grid);
     }
 
-    void LayRoad(MapInTheMaking map, Room src, Room dst)
+    void TryLayRoad(MapInTheMaking map, GridUnit src, GridUnit dst)
     {
-        //
+        var dir = src.GetAdjacent(dst);
+        switch(dir)
+        {
+        case GridUnit.Direction.Left:
+            {
+                int srcY = Random.Range(src.Room.Up, src.Room.Down);
+                int dstY = Random.Range(dst.Room.Up, dst.Room.Down);
+                int tateX = Random.Range(src.Room.Left - 1, dst.Room.Right + 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
+                LayHorizontalLine(map, srcY, src.Room.Left, tateX);
+                LayVerticalLine(map, tateX, srcY, dstY);
+                LayHorizontalLine(map, dstY, tateX, dst.Room.Right);
+            }
+            break;
+        case GridUnit.Direction.Right:
+            {
+                int srcY = Random.Range(src.Room.Up, src.Room.Down);
+                int dstY = Random.Range(dst.Room.Up, dst.Room.Down);
+                int tateX = Random.Range(src.Room.Right + 1, dst.Room.Left - 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
+                LayHorizontalLine(map, srcY, src.Room.Left, tateX);
+                LayVerticalLine(map, tateX, srcY, dstY);
+                LayHorizontalLine(map, dstY, tateX, dst.Room.Right);
+            }
+            break;
+        case GridUnit.Direction.Up:
+            {
+                int srcX = Random.Range(src.Room.Left, src.Room.Right);
+                int dstX = Random.Range(dst.Room.Left, dst.Room.Right);
+                int yokoY = Random.Range(src.Room.Up - 1, dst.Room.Down + 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
+                LayVerticalLine(map, srcX, src.Room.Up, yokoY);
+                LayHorizontalLine(map, yokoY, srcX, dstX);
+                LayVerticalLine(map, dstX, yokoY, dst.Room.Down);
+            }
+            break;
+        case GridUnit.Direction.Down:
+            {
+                int srcX = Random.Range(src.Room.Left, src.Room.Right);
+                int dstX = Random.Range(dst.Room.Left, dst.Room.Right);
+                int yokoY = Random.Range(src.Room.Down + 1, dst.Room.Up - 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
+                LayVerticalLine(map, srcX, src.Room.Down, yokoY);
+                LayHorizontalLine(map, yokoY, srcX, dstX);
+                LayVerticalLine(map, dstX, yokoY, dst.Room.Up);
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    void LayVerticalLine(MapInTheMaking map, int x, int srcY, int dstY)
+    {
+        if(srcY > dstY)
+        {
+            for(int y = srcY - 1; y >= dstY; y --)
+            {
+                map.tiles[y][x] = TileType.Floor;
+            }
+        }
+        if(srcY < dstY)
+        {
+            for(int y = srcY + 1; y <= dstY; y ++)
+            {
+                map.tiles[y][x] = TileType.Floor;
+            }
+        }
+    }
+
+    void LayHorizontalLine(MapInTheMaking map, int y, int srcX, int dstX)
+    {
+        if(srcX > dstX)
+        {
+            for(int x = srcX - 1; x >= dstX; x --)
+            {
+                map.tiles[y][x] = TileType.Floor;
+            }
+        }
+        if(srcX < dstX)
+        {
+            for(int x = srcX + 1; x <= dstX; x ++)
+            {
+                map.tiles[y][x] = TileType.Floor;
+            }
+        }
     }
 
 
