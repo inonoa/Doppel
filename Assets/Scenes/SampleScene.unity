@@ -400,8 +400,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d03c35accb70af49946b19c139d560c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 1875772243}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: view
+      Entry: 10
+      Data: 0
   generator: {fileID: 11400000, guid: bf3853b14e4e02d45ac21fa6dd2c64b4, type: 2}
-  debugView: {fileID: 1875772243}
 --- !u!1 &1901034626
 GameObject:
   m_ObjectHideFlags: 0

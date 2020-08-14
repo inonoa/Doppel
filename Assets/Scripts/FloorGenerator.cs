@@ -7,16 +7,26 @@ using Sirenix.OdinInspector;
 
 public class FloorGenerator : SerializedMonoBehaviour
 {
-    GeneratedMap map;
 
     [SerializeField] MapGenerator generator;
     [SerializeField] IMapView view;
+    [SerializeField] HeroMover heroPrefab;
+    HeroMover currentHero;
 
     void Start()
     {
-        map = generator.Generate();
+        var map = generator.Generate();
         view.SetMap(map);
         Debug.Log($"主人公: {RandomFloorTile(map)}");
+        currentHero = Instantiate(heroPrefab);
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.RightArrow)) currentHero.Move(HeroMover.Direction.R);
+        else if(Input.GetKeyDown(KeyCode.LeftArrow)) currentHero.Move(HeroMover.Direction.L);
+        else if(Input.GetKeyDown(KeyCode.UpArrow)) currentHero.Move(HeroMover.Direction.U);
+        else if(Input.GetKeyDown(KeyCode.DownArrow)) currentHero.Move(HeroMover.Direction.D);
     }
 
     Vector2Int RandomFloorTile(GeneratedMap map)
