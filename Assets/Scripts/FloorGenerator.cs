@@ -11,22 +11,21 @@ public class FloorGenerator : SerializedMonoBehaviour
     [SerializeField] MapGenerator generator;
     [SerializeField] IMapView view;
     [SerializeField] HeroMover heroPrefab;
-    HeroMover currentHero;
+    [SerializeField] DoppelMover doppelPrefab;
 
-    void Start()
+    public FloorStatus Generate()
     {
         var map = generator.Generate();
         Debug.Log($"主人公: {RandomFloorTile(map)}");
-        currentHero = Instantiate(heroPrefab);
-        view.SetStatus(new FloorStatus(map, currentHero));
-    }
+        var hero = Instantiate(heroPrefab);
+        List<DoppelMover> doppels = new List<DoppelMover>();
+        for(int i = 0; i < 5; i ++){
+            doppels.Add(Instantiate(doppelPrefab));
+        }
+        FloorStatus status = new FloorStatus(map, hero, doppels);
+        view.SetStatus(status);
 
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.RightArrow)) currentHero.Move(HeroMover.Direction.R);
-        else if(Input.GetKeyDown(KeyCode.LeftArrow)) currentHero.Move(HeroMover.Direction.L);
-        else if(Input.GetKeyDown(KeyCode.UpArrow)) currentHero.Move(HeroMover.Direction.U);
-        else if(Input.GetKeyDown(KeyCode.DownArrow)) currentHero.Move(HeroMover.Direction.D);
+        return status;
     }
 
     Vector2Int RandomFloorTile(GeneratedMap map)

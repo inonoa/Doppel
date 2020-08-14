@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class HeroMover : MonoBehaviour
 {
@@ -14,7 +15,10 @@ public class HeroMover : MonoBehaviour
         this.PosOnMap = posOnMap;
     }
 
-    public void Move(Direction dir)
+    Subject<Direction> _OnStartMove = new Subject<Direction>();
+    public IObservable<Direction> OnStartMove => _OnStartMove;
+
+    public void TryMove(Direction dir)
     {
         switch(dir)
         {
@@ -43,11 +47,12 @@ public class HeroMover : MonoBehaviour
         }
         break;
         }
+        _OnStartMove.OnNext(dir);
     }
 
 
     void Update()
     {
-        
+        //
     }
 }
