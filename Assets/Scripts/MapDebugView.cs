@@ -5,31 +5,47 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Sirenix.OdinInspector;
+using System.Text;
 
 public class MapDebugView : MonoBehaviour, IMapView
 {
     [SerializeField] Text text;
+    [SerializeField] Color heroColor = new Color(1, 0, 0, 1);
 
-    public void SetMap(GeneratedMap map)
+    FloorStatus status;
+
+    public void SetStatus(FloorStatus status)
     {
-        string txt = "";
+        this.status = status;
+    }
 
-        for(int i = 0; i < map.Tiles[0].Count; i++)
+    void Update()
+    {
+        StringBuilder mapStr = new StringBuilder("  ");
+
+        for(int i = 0; i < status.map.Tiles[0].Count; i++)
         {
-            txt += i.ToString("00");
+            mapStr.Append(i.ToString("00"));
         }
-        txt += "\n";
+        mapStr.Append("\n");
 
-        for(int i = 0; i < map.Tiles.Count; i++)
+        for(int i = 0; i < status.map.Tiles.Count; i++)
         {
-            txt += i.ToString("00");
-            foreach(TileType tile in map.Tiles[i])
+            mapStr.Append(i.ToString("00"));
+            for(int j = 0; j < status.map.Tiles[i].Count; j++)
             {
-                txt += tile.ToDebugChar() + " ";
+                if(status.hero.PosOnMap == new Vector2Int(j, i))
+                {
+                    mapStr.Append($"<color=#{ColorUtility.ToHtmlStringRGB(heroColor)}>P </color>");
+                }
+                else
+                {
+                    mapStr.Append(status.map.Tiles[i][j].ToDebugChar() + " ");
+                }
             }
-            txt += "\n";
+            mapStr.Append("\n");
         }
 
-        text.text = txt;
+        text.text = mapStr.ToString();
     }
 }

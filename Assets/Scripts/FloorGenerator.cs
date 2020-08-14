@@ -16,9 +16,9 @@ public class FloorGenerator : SerializedMonoBehaviour
     void Start()
     {
         var map = generator.Generate();
-        view.SetMap(map);
         Debug.Log($"主人公: {RandomFloorTile(map)}");
         currentHero = Instantiate(heroPrefab);
+        view.SetStatus(new FloorStatus(map, currentHero));
     }
 
     void Update()
@@ -46,5 +46,5 @@ public class FloorGenerator : SerializedMonoBehaviour
 
 public interface IMapView
 {
-    void SetMap(GeneratedMap map);
+    void SetStatus(FloorStatus status);
 }
