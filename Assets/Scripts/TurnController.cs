@@ -10,10 +10,12 @@ public class TurnController : SerializedMonoBehaviour
 {
     FloorStatus status;
     [SerializeField] FloorGenerator floorGenerator;
+    [SerializeField] IMapView view;
 
     void Start()
     {
         status = floorGenerator.Generate();
+        view.SetStatus(status);
 
         StartCoroutine(ProcTurns());
     }
@@ -36,7 +38,7 @@ public class TurnController : SerializedMonoBehaviour
         {
             turn ++;
             print($"ターン{turn}開始！");
-            
+
             yield return new WaitUntil(() => (heroDir = GetInput()) != null);
 
             status.hero.TryMove(heroDir.Value);
@@ -55,4 +57,9 @@ public class TurnController : SerializedMonoBehaviour
 public interface IUnderTurns
 {
     bool ActionCompleted{ get; }
+}
+
+public interface IMapView
+{
+    void SetStatus(FloorStatus status);
 }

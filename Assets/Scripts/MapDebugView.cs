@@ -11,6 +11,7 @@ public class MapDebugView : MonoBehaviour, IMapView
 {
     [SerializeField] Text text;
     [SerializeField] Color heroColor = new Color(1, 0, 0, 1);
+    [SerializeField] Color doppelColor = new Color(0.5f, 0, 1, 1);
 
     FloorStatus status;
 
@@ -37,6 +38,10 @@ public class MapDebugView : MonoBehaviour, IMapView
                 if(status.hero.PosOnMap == new Vector2Int(j, i))
                 {
                     mapStr.Append($"<color=#{ColorUtility.ToHtmlStringRGB(heroColor)}>P </color>");
+                }
+                else if(status.doppels.Any(dp => dp.PosOnMap == new Vector2Int(j, i)))
+                {
+                    mapStr.Append($"<color=#{ColorUtility.ToHtmlStringRGB(doppelColor)}>D </color>");
                 }
                 else
                 {

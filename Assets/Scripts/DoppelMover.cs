@@ -9,10 +9,13 @@ public class DoppelMover : MonoBehaviour, IUnderTurns
     public bool ActionCompleted => _ActionCompleted;
     bool _ActionCompleted = true;
 
-    HeroMover hero;
-    public void Init(HeroMover hero)
+    public Vector2Int PosOnMap{ get; private set; }
+
+    FloorStatus status;
+    public void Init(FloorStatus status, Vector2Int posOnMap)
     {
-        this.hero = hero;
+        this.status = status;
+        this.PosOnMap = posOnMap;
     }
 
     void Start()

@@ -16,9 +16,12 @@ public class HeroMover : MonoBehaviour, IUnderTurns
     public bool ActionCompleted => _ActionCompleted;
     bool _ActionCompleted = true;
 
-    public void Init(Vector2Int posOnMap)
+    FloorStatus status;
+
+    public void Init(Vector2Int posOnMap, FloorStatus status)
     {
         this.PosOnMap = posOnMap;
+        this.status = status;
     }
 
     Subject<Direction> _OnStartMove = new Subject<Direction>();

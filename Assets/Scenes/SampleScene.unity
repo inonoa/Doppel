@@ -153,16 +153,12 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 1875772243}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: view
-      Entry: 10
-      Data: 0
+    SerializationNodes: []
   generator: {fileID: 11400000, guid: bf3853b14e4e02d45ac21fa6dd2c64b4, type: 2}
   heroPrefab: {fileID: 3340755850908411928, guid: 67acc46102ba87341b6bf2d1da8e8ea6,
     type: 3}
@@ -389,12 +385,16 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 1875772243}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: view
+      Entry: 10
+      Data: 0
   floorGenerator: {fileID: 489720106}
 --- !u!4 &1269305297
 Transform:
@@ -463,6 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1875772244}
   heroColor: {r: 1, g: 0, b: 0.33545876, a: 1}
+  doppelColor: {r: 0.5, g: 0, b: 1, a: 1}
 --- !u!114 &1875772244
 MonoBehaviour:
   m_ObjectHideFlags: 0

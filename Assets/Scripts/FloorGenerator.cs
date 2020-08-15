@@ -9,23 +9,21 @@ public class FloorGenerator : SerializedMonoBehaviour
 {
 
     [SerializeField] MapGenerator generator;
-    [SerializeField] IMapView view;
     [SerializeField] HeroMover heroPrefab;
     [SerializeField] DoppelMover doppelPrefab;
 
     public FloorStatus Generate()
     {
         var map = generator.Generate();
-        Debug.Log($"主人公: {RandomFloorTile(map)}");
         var hero = Instantiate(heroPrefab);
         List<DoppelMover> doppels = new List<DoppelMover>();
+        FloorStatus status = new FloorStatus(map, hero, doppels);
+        hero.Init(RandomFloorTile(map), status);
         for(int i = 0; i < 5; i ++){
             DoppelMover doppel = Instantiate(doppelPrefab);
-            doppel.Init(hero);
+            doppel.Init(status, RandomFloorTile(map));
             doppels.Add(doppel);
         }
-        FloorStatus status = new FloorStatus(map, hero, doppels);
-        view.SetStatus(status);
 
         return status;
     }
@@ -45,7 +43,3 @@ public class FloorGenerator : SerializedMonoBehaviour
     }
 }
 
-public interface IMapView
-{
-    void SetStatus(FloorStatus status);
-}
