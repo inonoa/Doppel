@@ -19,8 +19,8 @@ public class HeroMover : MonoBehaviour, IUnderTurns
     {
         return Enumerable.Range(1, view)
                .Select(i => PosOnMap + ToVec(direction) * i)
-               .Where(pos => pos.x > -1 && pos.x < status.map.Width && pos.y > -1 && pos.y < status.map.Height)
-               .Where(pos => status.map.GetTile(pos) != TileType.Wall)
+               .TakeWhile(pos => pos.x > -1 && pos.x < status.map.Width && pos.y > -1 && pos.y < status.map.Height)
+               .TakeWhile(pos => status.map.GetTile(pos) != TileType.Wall)
                .ToArray();
     }
 
