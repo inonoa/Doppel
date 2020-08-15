@@ -11,12 +11,14 @@ public class TurnController : SerializedMonoBehaviour
 {
     FloorStatus status;
     [SerializeField] FloorGenerator floorGenerator;
-    [SerializeField] IMapView view;
-    [SerializeField] Text dieText;
+    IMapView view;
+    Text dieText;
 
-    void Start()
+    public void Init(int floor, Text dieText, IMapView view)
     {
-        status = floorGenerator.Generate();
+        this.dieText = dieText;
+        this.view = view;
+        status = floorGenerator.Generate(floor);
         view.SetStatus(status);
         dieText.gameObject.SetActive(false);
 
@@ -40,7 +42,6 @@ public class TurnController : SerializedMonoBehaviour
         while(true)
         {
             turn ++;
-            print($"ターン{turn}開始！");
 
             yield return new WaitUntil(() => (heroDir = GetInput()) != null && status.hero.CanMove(heroDir.Value));
 

@@ -10,14 +10,14 @@ using MapInTheMaking = GeneratedMap.MapInTheMaking;
 [CreateAssetMenu(menuName = "ScriptableObject/MapGenerator", fileName = "MapGenerator", order = 5)]
 public class MapGenerator : ScriptableObject
 {
-    [SerializeField] Vector2Int mapSize = new Vector2Int(30, 30);
-    [SerializeField] Vector2Int gridSize = new Vector2Int(6, 6);
+    [SerializeField] ParamVec2Int mapSize;
+    [SerializeField] ParamVec2Int gridSize;
 
-    public GeneratedMap Generate()
+    public GeneratedMap Generate(int floor)
     {
-        var map = FilledMap(mapSize, TileType.Wall);
+        var map = FilledMap(mapSize.Get(floor), TileType.Wall, floor);
 
-        HashSet<GridUnit> divided = DivideGrid(map);
+        HashSet<GridUnit> divided = DivideGrid(map, floor);
 
         CombineGrids(divided);
         CombineGrids(divided);
@@ -48,13 +48,13 @@ public class MapGenerator : ScriptableObject
         return new GeneratedMap(map);
     }
 
-    MapInTheMaking FilledMap(Vector2Int size, TileType type)
+    MapInTheMaking FilledMap(Vector2Int size, TileType type, int floor)
     {
         var map = new MapInTheMaking();
-        foreach(int i in Enumerable.Range(0, mapSize.y))
+        foreach(int i in Enumerable.Range(0, mapSize.Get(floor).y))
         {
             map.tiles.Add(new List<TileType>());
-            foreach (int j in Enumerable.Range(0, mapSize.x))
+            foreach (int j in Enumerable.Range(0, mapSize.Get(floor).x))
             {
                 map.tiles.Last().Add(type);
             }
@@ -62,9 +62,9 @@ public class MapGenerator : ScriptableObject
         return map;
     }
 
-    HashSet<GridUnit> DivideGrid(MapInTheMaking map)
+    HashSet<GridUnit> DivideGrid(MapInTheMaking map, int floor)
     {
-        Vector2Int num_grid = new Vector2Int(map.tiles[0].Count / gridSize.x, map.tiles.Count / gridSize.y);
+        Vector2Int num_grid = new Vector2Int(map.tiles[0].Count / gridSize.Get(floor).x, map.tiles.Count / gridSize.Get(floor).y);
 
         var ans = new HashSet<GridUnit>();
 

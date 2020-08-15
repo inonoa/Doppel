@@ -12,9 +12,9 @@ public class FloorGenerator : SerializedMonoBehaviour
     [SerializeField] HeroMover heroPrefab;
     [SerializeField] DoppelMover doppelPrefab;
 
-    public FloorStatus Generate()
+    public FloorStatus Generate(int floor)
     {
-        var map = generator.Generate();
+        var map = generator.Generate(floor);
         var hero = Instantiate(heroPrefab);
         List<DoppelMover> doppels = new List<DoppelMover>();
         FloorStatus status = new FloorStatus(map, hero, doppels);
