@@ -6,10 +6,23 @@ using UniRx;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 using System.Linq;
+using Random = UnityEngine.Random;
 
 public class HeroMover : MonoBehaviour, IUnderTurns
 {
     public enum Direction{ L, R, U, D }
+
+    [ReadOnly] [SerializeField] Direction direction;
+
+    int view = 3;
+    public Vector2Int[] GetView()
+    {
+        return Enumerable.Range(1, view)
+               .Select(i => PosOnMap + ToVec(direction) * i)
+               .Where(pos => pos.x > -1 && pos.x < status.map.Width && pos.y > -1 && pos.y < status.map.Height)
+               .Where(pos => status.map.GetTile(pos) != TileType.Wall)
+               .ToArray();
+    }
 
     [field: SerializeField] [field: LabelText("Position On Map")] [field: ReadOnly]
     public Vector2Int PosOnMap{ get; private set; }
@@ -23,10 +36,8 @@ public class HeroMover : MonoBehaviour, IUnderTurns
     {
         this.PosOnMap = posOnMap;
         this.status = status;
+        this.direction = (Direction) Random.Range(0, 3);
     }
-
-    Subject<Direction> _OnStartMove = new Subject<Direction>();
-    public IObservable<Direction> OnStartMove => _OnStartMove;
 
     public bool CanMove(Direction dir)
     {
@@ -50,32 +61,19 @@ public class HeroMover : MonoBehaviour, IUnderTurns
         return true;
     }
 
+    Vector2Int ToVec(Direction dir)
+    {
+        if(dir == Direction.R) return new Vector2Int(1, 0);
+        if(dir == Direction.U) return new Vector2Int(0, -1);
+        if(dir == Direction.L) return new Vector2Int(-1, 0);
+                               return new Vector2Int(0, 1);
+    }
+
     public void Move(Direction dir)
     {
-        switch(dir)
-        {
-        case Direction.R:
-        {
-            PosOnMap += new Vector2Int(1, 0);
-        }
-        break;
-        case Direction.L:
-        {
-            PosOnMap += new Vector2Int(-1, 0);
-        }
-        break;
-        case Direction.D:
-        {
-            PosOnMap += new Vector2Int(0, 1);
-        }
-        break;
-        case Direction.U:
-        {
-            PosOnMap += new Vector2Int(0, -1);
-        }
-        break;
-        }
+        PosOnMap += ToVec(dir);
         _ActionCompleted = false;
+        this.direction = dir;
         DOVirtual.DelayedCall(0.5f, () => {
             _ActionCompleted = true;
         });
