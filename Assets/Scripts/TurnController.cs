@@ -14,9 +14,6 @@ public class TurnController : SerializedMonoBehaviour
     void Start()
     {
         status = floorGenerator.Generate();
-        status.hero.OnStartMove.Subscribe(dir => {
-            status.doppels.ForEach(dp => dp.Move());
-        });
 
         StartCoroutine(ProcTurns());
     }
@@ -32,15 +29,30 @@ public class TurnController : SerializedMonoBehaviour
 
     IEnumerator ProcTurns()
     {
+        int turn = 0;
         HeroMover.Direction? heroDir = GetInput();
 
         while(true)
         {
+            turn ++;
+            print($"ターン{turn}開始！");
+            
             yield return new WaitUntil(() => (heroDir = GetInput()) != null);
 
             status.hero.TryMove(heroDir.Value);
+            status.doppels.ForEach(dp => {
+                dp.Move();
+            });
 
-            yield return null;
+            yield return new WaitUntil(() => {
+                return status.hero.ActionCompleted
+                    && status.doppels.All(dp => dp.ActionCompleted);
+            });
         }
     }
+}
+
+public interface IUnderTurns
+{
+    bool ActionCompleted{ get; }
 }

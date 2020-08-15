@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
-public class HeroMover : MonoBehaviour
+public class HeroMover : MonoBehaviour, IUnderTurns
 {
     public enum Direction{ L, R, U, D }
 
     [field: SerializeField] [field: LabelText("Position On Map")] [field: ReadOnly]
     public Vector2Int PosOnMap{ get; private set; }
+
+    public bool ActionCompleted => _ActionCompleted;
+    bool _ActionCompleted = true;
 
     public void Init(Vector2Int posOnMap)
     {
@@ -26,30 +30,30 @@ public class HeroMover : MonoBehaviour
         {
         case Direction.R:
         {
-            print("右！");
             PosOnMap += new Vector2Int(1, 0);
         }
         break;
         case Direction.L:
         {
-            print("左！");
             PosOnMap += new Vector2Int(-1, 0);
         }
         break;
         case Direction.D:
         {
-            print("下！");
             PosOnMap += new Vector2Int(0, 1);
         }
         break;
         case Direction.U:
         {
-            print("上！");
             PosOnMap += new Vector2Int(0, -1);
         }
         break;
         }
-        _OnStartMove.OnNext(dir);
+        _ActionCompleted = false;
+        DOVirtual.DelayedCall(2f, () => {
+            _ActionCompleted = true;
+            print("主人公移動終了");
+        });
     }
 
 

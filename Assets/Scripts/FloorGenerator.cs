@@ -20,7 +20,9 @@ public class FloorGenerator : SerializedMonoBehaviour
         var hero = Instantiate(heroPrefab);
         List<DoppelMover> doppels = new List<DoppelMover>();
         for(int i = 0; i < 5; i ++){
-            doppels.Add(Instantiate(doppelPrefab));
+            DoppelMover doppel = Instantiate(doppelPrefab);
+            doppel.Init(hero);
+            doppels.Add(doppel);
         }
         FloorStatus status = new FloorStatus(map, hero, doppels);
         view.SetStatus(status);
