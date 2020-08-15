@@ -57,6 +57,9 @@ MonoBehaviour:
     type: 3}
   doppelPrefab: {fileID: 2111620620849629199, guid: 895e479f56908134d91aa29908d2f77b,
     type: 3}
+  initialNumDoppels:
+    paramOn0F: 3
+    paramOn100F: 10
 --- !u!1 &8656631334222042196
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,9 +112,5 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: view
-      Entry: 6
-      Data: 
+    SerializationNodes: []
   floorGenerator: {fileID: 8656631333441409713}
-  dieText: {fileID: 0}

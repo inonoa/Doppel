@@ -11,7 +11,7 @@ public class FloorGenerator : SerializedMonoBehaviour
     [SerializeField] MapGenerator generator;
     [SerializeField] HeroMover heroPrefab;
     [SerializeField] DoppelMover doppelPrefab;
-
+    [SerializeField] ParamInt initialNumDoppels;
     public FloorStatus Generate(int floor)
     {
         var map = generator.Generate(floor);
@@ -19,7 +19,7 @@ public class FloorGenerator : SerializedMonoBehaviour
         List<DoppelMover> doppels = new List<DoppelMover>();
         FloorStatus status = new FloorStatus(map, hero, doppels);
         hero.Init(RandomFloorTile(map), status);
-        for(int i = 0; i < 5; i ++){
+        for(int i = 0; i < initialNumDoppels.Get(floor); i ++){
             DoppelMover doppel = Instantiate(doppelPrefab);
             doppel.Init(status, RandomFloorTile(map));
             doppels.Add(doppel);

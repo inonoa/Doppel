@@ -17,3 +17,15 @@ public class ParamVec2Int
         return new Vector2Int(valX, valY);
     }
 }
+
+[Serializable]
+public class ParamInt
+{
+    [SerializeField] [LabelText("0F")] [LabelWidth(50)] [HorizontalGroup("p")] int paramOn0F;
+    [SerializeField] [LabelText("100F")] [LabelWidth(50)] [HorizontalGroup("p")] int paramOn100F;
+
+    public int Get(int floor)
+    {
+        return Mathf.RoundToInt(Mathf.LerpUnclamped(paramOn0F, paramOn100F, floor / (float)100));
+    }
+}
