@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 613246814}
   - component: {fileID: 613246813}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Die
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -473,6 +473,7 @@ MonoBehaviour:
       Entry: 10
       Data: 0
   floorGenerator: {fileID: 489720106}
+  dieText: {fileID: 613246813}
 --- !u!4 &1269305297
 Transform:
   m_ObjectHideFlags: 0

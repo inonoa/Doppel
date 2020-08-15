@@ -5,17 +5,20 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UniRx;
 using System.Linq;
+using UnityEngine.UI;
 
 public class TurnController : SerializedMonoBehaviour
 {
     FloorStatus status;
     [SerializeField] FloorGenerator floorGenerator;
     [SerializeField] IMapView view;
+    [SerializeField] Text dieText;
 
     void Start()
     {
         status = floorGenerator.Generate();
         view.SetStatus(status);
+        dieText.gameObject.SetActive(false);
 
         StartCoroutine(ProcTurns());
     }
@@ -50,6 +53,12 @@ public class TurnController : SerializedMonoBehaviour
                 return status.hero.ActionCompleted
                     && status.doppels.All(dp => dp.ActionCompleted);
             });
+
+            if(status.hero.GetView().Any(pos => status.doppels.Any(dp => pos == dp.PosOnMap)))
+            {
+                dieText.gameObject.SetActive(true);
+                yield break;
+            }
         }
     }
 }
