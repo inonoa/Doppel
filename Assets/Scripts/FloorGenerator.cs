@@ -15,12 +15,12 @@ public class FloorGenerator : SerializedMonoBehaviour
     public FloorStatus Generate(int floor)
     {
         var map = generator.Generate(floor);
-        var hero = Instantiate(heroPrefab);
+        var hero = Instantiate(heroPrefab, transform);
         List<DoppelMover> doppels = new List<DoppelMover>();
         FloorStatus status = new FloorStatus(map, hero, doppels);
         hero.Init(RandomFloorTile(map), status);
         for(int i = 0; i < initialNumDoppels.Get(floor); i ++){
-            DoppelMover doppel = Instantiate(doppelPrefab);
+            DoppelMover doppel = Instantiate(doppelPrefab, transform);
             doppel.Init(status, RandomFloorTile(map));
             doppels.Add(doppel);
         }
