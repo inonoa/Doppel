@@ -39,9 +39,9 @@ public class TurnController : SerializedMonoBehaviour
             turn ++;
             print($"ターン{turn}開始！");
 
-            yield return new WaitUntil(() => (heroDir = GetInput()) != null);
+            yield return new WaitUntil(() => (heroDir = GetInput()) != null && status.hero.CanMove(heroDir.Value));
 
-            status.hero.TryMove(heroDir.Value);
+            status.hero.Move(heroDir.Value);
             status.doppels.ForEach(dp => {
                 dp.Move();
             });

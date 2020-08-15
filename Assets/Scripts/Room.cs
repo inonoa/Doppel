@@ -23,7 +23,7 @@ public class Room : MonoBehaviour
         {
             for(int j = this.leftUp.y; j < this.rightDown.y + 1; j ++)
             {
-                dst.tiles[j][i] = TileType.Floor;
+                dst.tiles[j][i] = TileType.RoomFloor;
             }
         }
     }

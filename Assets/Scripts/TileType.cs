@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum TileType
 {
-    Floor, Wall, Stair
+    Aisle, RoomFloor, Wall, Stair
 }
 
 public static class TileTypeExtension
@@ -14,10 +14,11 @@ public static class TileTypeExtension
     {
         switch (type)
         {
-        case TileType.Floor: return ' ';
-        case TileType.Wall:  return '■';
-        case TileType.Stair: return 'L';
-        default:             return 'X';
+        case TileType.Aisle:     return '_';
+        case TileType.RoomFloor: return ' ';
+        case TileType.Wall:      return '■';
+        case TileType.Stair:     return 'L';
+        default:                 return 'X';
         }
     }
 }

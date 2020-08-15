@@ -37,7 +37,7 @@ public class FloorGenerator : SerializedMonoBehaviour
         while(true)
         {
             ans = new Vector2Int(Random.Range(0, width - 1), Random.Range(0, height - 1));
-            if(map.Tiles[ans.y][ans.x] == TileType.Floor) break;
+            if(map.Tiles[ans.y][ans.x] == TileType.RoomFloor) break;
         }
         return ans;
     }

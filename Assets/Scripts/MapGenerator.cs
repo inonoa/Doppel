@@ -120,9 +120,9 @@ public class MapGenerator : ScriptableObject
                 int srcY = Random.Range(src.Room.Up, src.Room.Down);
                 int dstY = Random.Range(dst.Room.Up, dst.Room.Down);
                 int tateX = Random.Range(src.Room.Left - 1, dst.Room.Right + 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
-                LayHorizontalLine(map, srcY, src.Room.Left, tateX);
+                LayHorizontalLine(map, srcY, src.Room.Left - 1, tateX);
                 LayVerticalLine(map, tateX, srcY, dstY);
-                LayHorizontalLine(map, dstY, tateX, dst.Room.Right);
+                LayHorizontalLine(map, dstY, tateX, dst.Room.Right + 1);
             }
             break;
         case GridUnit.Direction.Right:
@@ -130,9 +130,9 @@ public class MapGenerator : ScriptableObject
                 int srcY = Random.Range(src.Room.Up, src.Room.Down);
                 int dstY = Random.Range(dst.Room.Up, dst.Room.Down);
                 int tateX = Random.Range(src.Room.Right + 1, dst.Room.Left - 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
-                LayHorizontalLine(map, srcY, src.Room.Left, tateX);
+                LayHorizontalLine(map, srcY, src.Room.Right + 1, tateX);
                 LayVerticalLine(map, tateX, srcY, dstY);
-                LayHorizontalLine(map, dstY, tateX, dst.Room.Right);
+                LayHorizontalLine(map, dstY, tateX, dst.Room.Left - 1);
             }
             break;
         case GridUnit.Direction.Up:
@@ -140,9 +140,9 @@ public class MapGenerator : ScriptableObject
                 int srcX = Random.Range(src.Room.Left, src.Room.Right);
                 int dstX = Random.Range(dst.Room.Left, dst.Room.Right);
                 int yokoY = Random.Range(src.Room.Up - 1, dst.Room.Down + 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
-                LayVerticalLine(map, srcX, src.Room.Up, yokoY);
+                LayVerticalLine(map, srcX, src.Room.Up - 1, yokoY);
                 LayHorizontalLine(map, yokoY, srcX, dstX);
-                LayVerticalLine(map, dstX, yokoY, dst.Room.Down);
+                LayVerticalLine(map, dstX, yokoY, dst.Room.Down + 1);
             }
             break;
         case GridUnit.Direction.Down:
@@ -150,9 +150,9 @@ public class MapGenerator : ScriptableObject
                 int srcX = Random.Range(src.Room.Left, src.Room.Right);
                 int dstX = Random.Range(dst.Room.Left, dst.Room.Right);
                 int yokoY = Random.Range(src.Room.Down + 1, dst.Room.Up - 1); //範囲無の場合無い……？ -> とりあえず部屋にへばりつく通路も許容
-                LayVerticalLine(map, srcX, src.Room.Down, yokoY);
+                LayVerticalLine(map, srcX, src.Room.Down + 1, yokoY);
                 LayHorizontalLine(map, yokoY, srcX, dstX);
-                LayVerticalLine(map, dstX, yokoY, dst.Room.Up);
+                LayVerticalLine(map, dstX, yokoY, dst.Room.Up - 1);
             }
             break;
         default:
@@ -164,16 +164,16 @@ public class MapGenerator : ScriptableObject
     {
         if(srcY > dstY)
         {
-            for(int y = srcY - 1; y >= dstY; y --)
+            for(int y = srcY; y >= dstY; y --)
             {
-                map.tiles[y][x] = TileType.Floor;
+                map.tiles[y][x] = TileType.Aisle;
             }
         }
         if(srcY < dstY)
         {
-            for(int y = srcY + 1; y <= dstY; y ++)
+            for(int y = srcY; y <= dstY; y ++)
             {
-                map.tiles[y][x] = TileType.Floor;
+                map.tiles[y][x] = TileType.Aisle;
             }
         }
     }
@@ -182,16 +182,16 @@ public class MapGenerator : ScriptableObject
     {
         if(srcX > dstX)
         {
-            for(int x = srcX - 1; x >= dstX; x --)
+            for(int x = srcX; x >= dstX; x --)
             {
-                map.tiles[y][x] = TileType.Floor;
+                map.tiles[y][x] = TileType.Aisle;
             }
         }
         if(srcX < dstX)
         {
-            for(int x = srcX + 1; x <= dstX; x ++)
+            for(int x = srcX; x <= dstX; x ++)
             {
-                map.tiles[y][x] = TileType.Floor;
+                map.tiles[y][x] = TileType.Aisle;
             }
         }
     }

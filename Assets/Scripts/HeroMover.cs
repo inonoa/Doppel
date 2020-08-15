@@ -5,6 +5,7 @@ using UnityEngine;
 using UniRx;
 using Sirenix.OdinInspector;
 using DG.Tweening;
+using System.Linq;
 
 public class HeroMover : MonoBehaviour, IUnderTurns
 {
@@ -27,7 +28,29 @@ public class HeroMover : MonoBehaviour, IUnderTurns
     Subject<Direction> _OnStartMove = new Subject<Direction>();
     public IObservable<Direction> OnStartMove => _OnStartMove;
 
-    public void TryMove(Direction dir)
+    public bool CanMove(Direction dir)
+    {
+        Vector2Int next;
+        switch(dir)
+        {
+            case Direction.R: next = PosOnMap + new Vector2Int(1,  0);  break;
+            case Direction.L: next = PosOnMap + new Vector2Int(-1, 0);  break;
+            case Direction.U: next = PosOnMap + new Vector2Int(0,  -1); break;
+            case Direction.D: next = PosOnMap + new Vector2Int(0,  1);  break;
+            default:          next = new Vector2Int(-1, -1);            break;
+        }
+        //マップ外(端が床にならないから意味ない気がするが)
+        if(next.x < 0 || next.x >= status.map.Width)  return false;
+        if(next.y < 0 || next.y >= status.map.Height) return false;
+        //壁破壊不可能
+        if(status.map.Tiles[next.y][next.x] == TileType.Wall) return false;
+        //ドッペルに重ならない
+        if(status.doppels.Any(dp => next == dp.PosOnMap)) return false;
+
+        return true;
+    }
+
+    public void Move(Direction dir)
     {
         switch(dir)
         {
@@ -53,9 +76,8 @@ public class HeroMover : MonoBehaviour, IUnderTurns
         break;
         }
         _ActionCompleted = false;
-        DOVirtual.DelayedCall(2f, () => {
+        DOVirtual.DelayedCall(0.5f, () => {
             _ActionCompleted = true;
-            print("主人公移動終了");
         });
     }
 
