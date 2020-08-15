@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using UniRx;
 using System.Linq;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class TurnController : SerializedMonoBehaviour
 {
@@ -14,13 +15,18 @@ public class TurnController : SerializedMonoBehaviour
     IMapView view;
     Text dieText;
 
+    Subject<Unit> _NextFloor = new Subject<Unit>();
+    public IObservable<Unit> NextFloor => _NextFloor;
+
+    Subject<Unit> _Died = new Subject<Unit>();
+    public IObservable<Unit> Died => _Died;
+
     public void Init(int floor, Text dieText, IMapView view)
     {
         this.dieText = dieText;
         this.view = view;
         status = floorGenerator.Generate(floor);
         view.SetStatus(status);
-        dieText.gameObject.SetActive(false);
 
         StartCoroutine(ProcTurns());
     }
@@ -58,6 +64,14 @@ public class TurnController : SerializedMonoBehaviour
             if(status.hero.GetView().Any(pos => status.doppels.Any(dp => pos == dp.PosOnMap)))
             {
                 dieText.gameObject.SetActive(true);
+                DOVirtual.DelayedCall(1f, () => dieText.gameObject.SetActive(false));
+                _Died.OnNext(Unit.Default);
+                yield break;
+            }
+
+            if(status.map.GetTile(status.hero.PosOnMap) == TileType.Stair)
+            {
+                _NextFloor.OnNext(Unit.Default);
                 yield break;
             }
         }
