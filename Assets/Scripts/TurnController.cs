@@ -14,6 +14,7 @@ public class TurnController : SerializedMonoBehaviour
     [SerializeField] FloorGenerator floorGenerator;
     IMapView debugView;
     [SerializeField] IMapView view;
+    [SerializeField] ViewParams viewParams;
     Text dieText;
 
     Subject<Unit> _NextFloor = new Subject<Unit>();
@@ -26,7 +27,7 @@ public class TurnController : SerializedMonoBehaviour
     {
         this.dieText = dieText;
         this.debugView = debugView;
-        status = floorGenerator.Generate(floor);
+        status = floorGenerator.Generate(floor, viewParams);
         this.debugView.SetStatus(status);
         this.view.SetStatus(status);
 

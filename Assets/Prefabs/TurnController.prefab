@@ -47,8 +47,8 @@ MonoBehaviour:
     type: 3}
   floorPrefab: {fileID: 126422761162870953, guid: a68e0a261c463664e992519dbe34db8b,
     type: 3}
-  tileSize: 1
   floorY: -0.5
+  _TileSize: 1
 --- !u!1 &8656631333441409714
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,3 +168,5 @@ MonoBehaviour:
       Entry: 10
       Data: 0
   floorGenerator: {fileID: 8656631333441409713}
+  viewParams:
+    _TileSize: 1

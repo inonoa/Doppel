@@ -92,7 +92,6 @@ public class DoppelMover : MonoBehaviour, IUnderTurns
 
     Vector2Int Forward(Dir dir)
     {
-        Debug.Log(dir);
         switch(dir)
         {
         case Dir.R: return PosOnMap + new Vector2Int(1, 0);

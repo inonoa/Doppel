@@ -13,11 +13,12 @@ public class HeroMover : MonoBehaviour, IUnderTurns
     public enum Direction{ L, R, U, D }
 
     [ReadOnly] [SerializeField] Direction direction;
+    [SerializeField] HeroView view;
 
-    int view = 3;
+    int viewLength = 3;
     public Vector2Int[] GetView()
     {
-        return Enumerable.Range(1, view)
+        return Enumerable.Range(1, viewLength)
                .Select(i => PosOnMap + ToVec(direction) * i)
                .TakeWhile(pos => pos.x > -1 && pos.x < status.map.Width && pos.y > -1 && pos.y < status.map.Height)
                .TakeWhile(pos => status.map.GetTile(pos) != TileType.Wall)
@@ -32,11 +33,12 @@ public class HeroMover : MonoBehaviour, IUnderTurns
 
     FloorStatus status;
 
-    public void Init(Vector2Int posOnMap, FloorStatus status)
+    public void Init(Vector2Int posOnMap, FloorStatus status, ViewParams viewParams)
     {
         this.PosOnMap = posOnMap;
         this.status = status;
         this.direction = (Direction) Random.Range(0, 3);
+        this.view.Init(status, viewParams, this.direction);
     }
 
     public bool CanMove(Direction dir)
@@ -74,7 +76,10 @@ public class HeroMover : MonoBehaviour, IUnderTurns
         PosOnMap += ToVec(dir);
         _ActionCompleted = false;
         this.direction = dir;
-        DOVirtual.DelayedCall(0.5f, () => {
+
+        view.Move(dir)
+        .Subscribe(_ =>
+        {
             _ActionCompleted = true;
         });
     }
