@@ -21,7 +21,7 @@ public class FloorGenerator : SerializedMonoBehaviour
         hero.Init(RandomFloorTile(map), status, viewParams);
         for(int i = 0; i < initialNumDoppels.Get(floor); i ++){
             DoppelMover doppel = Instantiate(doppelPrefab, transform);
-            doppel.Init(status, RandomFloorTile(map));
+            doppel.Init(status, RandomFloorTile(map), viewParams);
             doppels.Add(doppel);
         }
 

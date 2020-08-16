@@ -5,20 +5,32 @@ using UnityEngine;
 using DG.Tweening;
 using Random = UnityEngine.Random;
 using System.Linq;
+using UniRx;
 
-public class DoppelMover : MonoBehaviour, IUnderTurns
+public class DoppelMover : MonoBehaviour, IUnderTurns, IOnMap
 {
     public bool ActionCompleted => _ActionCompleted;
     bool _ActionCompleted = true;
 
     public Vector2Int PosOnMap{ get; private set; }
 
+    [SerializeField] HeroView view;
+
     FloorStatus status;
-    public void Init(FloorStatus status, Vector2Int posOnMap)
+    public void Init(FloorStatus status, Vector2Int posOnMap, ViewParams viewParams)
     {
         this.status = status;
         this.PosOnMap = posOnMap;
         this.lastDir = (Dir) Random.Range(0, 3);
+        this.view.Init(this, status, viewParams, tmp(this.lastDir));
+    }
+
+    HeroMover.Direction tmp(Dir dir)
+    {
+        if(dir == Dir.R) return HeroMover.Direction.R;
+        if(dir == Dir.L) return HeroMover.Direction.L;
+        if(dir == Dir.U) return HeroMover.Direction.U;
+        return HeroMover.Direction.D;
     }
 
     void Start()
@@ -39,12 +51,13 @@ public class DoppelMover : MonoBehaviour, IUnderTurns
     public void Move()
     {
         Vector2Int next = NextPos();
-        PosOnMap = next;
-
-        _ActionCompleted = false;
-        DOVirtual.DelayedCall(0.3f, () => {
-            _ActionCompleted = true;
-        });
+        if(next != PosOnMap)
+        {
+            PosOnMap = next;
+            _ActionCompleted = false;
+            view.Move(tmp(lastDir))
+            .Subscribe(_ => _ActionCompleted = true);
+        }
     }
 
     Vector2Int NextPos()

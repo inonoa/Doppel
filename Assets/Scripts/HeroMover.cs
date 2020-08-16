@@ -8,7 +8,7 @@ using DG.Tweening;
 using System.Linq;
 using Random = UnityEngine.Random;
 
-public class HeroMover : MonoBehaviour, IUnderTurns
+public class HeroMover : MonoBehaviour, IUnderTurns, IOnMap
 {
     public enum Direction{ L, R, U, D }
 
@@ -38,7 +38,7 @@ public class HeroMover : MonoBehaviour, IUnderTurns
         this.PosOnMap = posOnMap;
         this.status = status;
         this.direction = (Direction) Random.Range(0, 3);
-        this.view.Init(status, viewParams, this.direction);
+        this.view.Init(this, status, viewParams, this.direction);
     }
 
     public bool CanMove(Direction dir)
