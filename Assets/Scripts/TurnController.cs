@@ -23,13 +23,14 @@ public class TurnController : SerializedMonoBehaviour
     Subject<Unit> _Died = new Subject<Unit>();
     public IObservable<Unit> Died => _Died;
 
-    public void Init(int floor, Text dieText, IMapView debugView)
+    public void Init(int floor, Text dieText, IMapView debugView, CameraMover cameraMover)
     {
         this.dieText = dieText;
         this.debugView = debugView;
         status = floorGenerator.Generate(floor, viewParams);
         this.debugView.SetStatus(status);
         this.view.SetStatus(status);
+        cameraMover.Init(status);
 
         StartCoroutine(ProcTurns());
     }

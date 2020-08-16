@@ -11,6 +11,7 @@ public class DangeonController : SerializedMonoBehaviour
     [SerializeField] TurnController turnControllerPrefab;
     [SerializeField] Text dieText;
     [SerializeField] IMapView mapDebugView;
+    [SerializeField] CameraMover cameraMover;
 
     void Start()
     {
@@ -21,7 +22,7 @@ public class DangeonController : SerializedMonoBehaviour
     void InitFloor(int floor)
     {
         var turnController = Instantiate(turnControllerPrefab);
-        turnController.Init(floor, dieText, mapDebugView);
+        turnController.Init(floor, dieText, mapDebugView, cameraMover);
         turnController.NextFloor.Subscribe(_ =>
         {
             Destroy(turnController.gameObject);
