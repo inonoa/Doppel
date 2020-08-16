@@ -12,7 +12,8 @@ public class TurnController : SerializedMonoBehaviour
 {
     FloorStatus status;
     [SerializeField] FloorGenerator floorGenerator;
-    IMapView view;
+    IMapView debugView;
+    [SerializeField] IMapView view;
     Text dieText;
 
     Subject<Unit> _NextFloor = new Subject<Unit>();
@@ -21,12 +22,13 @@ public class TurnController : SerializedMonoBehaviour
     Subject<Unit> _Died = new Subject<Unit>();
     public IObservable<Unit> Died => _Died;
 
-    public void Init(int floor, Text dieText, IMapView view)
+    public void Init(int floor, Text dieText, IMapView debugView)
     {
         this.dieText = dieText;
-        this.view = view;
+        this.debugView = debugView;
         status = floorGenerator.Generate(floor);
-        view.SetStatus(status);
+        this.debugView.SetStatus(status);
+        this.view.SetStatus(status);
 
         StartCoroutine(ProcTurns());
     }
