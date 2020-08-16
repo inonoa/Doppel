@@ -14,9 +14,13 @@ public class HeroView : MonoBehaviour
     public IObservable<Unit> Move(HeroMover.Direction dir)
     {
         Subject<Unit> finished = new Subject<Unit>();
-        transform.DOLocalMove(Pos(status, params_.TileSize), 1f); //1f...
+        transform.DOLocalMove(
+            Pos(status, params_.TileSize),
+            0.5f
+        )
+        .SetEase(Ease.InOutSine)
+        .onComplete += () => finished.OnNext(Unit.Default);
         anim.Play("move" + TriggerStr(dir));
-        DOVirtual.DelayedCall(1f, () => finished.OnNext(Unit.Default));
         return finished;
     }
 

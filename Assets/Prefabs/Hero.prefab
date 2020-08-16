@@ -75,28 +75,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anims:
   - _Name: moveR
-    secsPerSprite: 0.3
+    secsPerSprite: 0.15
     sprites:
     - {fileID: 21300000, guid: 10b7615de0d656c49a8033f75f376cbf, type: 3}
     - {fileID: 21300000, guid: 3b8f1fe9436f78b4db589c0ed9b350c5, type: 3}
     - {fileID: 21300000, guid: 776b335b2d4f69b498cdd861ed2a0b3f, type: 3}
     - {fileID: 21300000, guid: 3b8f1fe9436f78b4db589c0ed9b350c5, type: 3}
   - _Name: moveL
-    secsPerSprite: 0.3
+    secsPerSprite: 0.15
     sprites:
     - {fileID: 21300000, guid: 349bf80a66492fa4ab2d460764c5683b, type: 3}
     - {fileID: 21300000, guid: 55ad8fc127fe9584ab136c7b42b58768, type: 3}
     - {fileID: 21300000, guid: 8e00ef234f3809e48a21dbd958d51f30, type: 3}
     - {fileID: 21300000, guid: 55ad8fc127fe9584ab136c7b42b58768, type: 3}
   - _Name: moveU
-    secsPerSprite: 0.3
+    secsPerSprite: 0.15
     sprites:
     - {fileID: 21300000, guid: 25c6f778d2af0db4ead0a54cb5ab39ee, type: 3}
     - {fileID: 21300000, guid: d59fec37c853620469a3baf1f807da4f, type: 3}
     - {fileID: 21300000, guid: 31c4aca66a33e6e47b28d198a8d0b2da, type: 3}
     - {fileID: 21300000, guid: d59fec37c853620469a3baf1f807da4f, type: 3}
   - _Name: moveD
-    secsPerSprite: 0.3
+    secsPerSprite: 0.15
     sprites:
     - {fileID: 21300000, guid: cd2275db789b31e4ebf0f7855e08ea90, type: 3}
     - {fileID: 21300000, guid: d971a6adaadd0684e94628e672fba022, type: 3}
