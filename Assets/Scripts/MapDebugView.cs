@@ -19,6 +19,7 @@ public class MapDebugView : MonoBehaviour, IMapView
     {
         this.status = status;
     }
+    public void SetActive(bool active) => gameObject.SetActive(active);
 
     enum TileStatus{ Wall, Aisle, RoomFloor, Stair, Hero, HeroView, Doppel }
 

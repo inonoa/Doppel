@@ -79,10 +79,12 @@ public class InstructionSceneView : MonoBehaviour
         .Select(img => img.DOFade(0, 0.5f))
         .ForEach(tw => seq.Join(tw));
 
-        seq.Append(bgImg.DOFade(0, 0.3f));
-
         var completed = new Subject<Unit>();
-        seq.onComplete += () => completed.OnNext(Unit.Default);
+        seq.onComplete += () =>
+        {
+            bgImg.DOFade(0, 0.3f);
+            completed.OnNext(Unit.Default);
+        };
 
         return completed;
     }

@@ -15,8 +15,8 @@ public class DangeonController : SerializedMonoBehaviour
 
     void Start()
     {
-        InitFloor(0);
         dieText.gameObject.SetActive(false);
+        mapDebugView.SetActive(false);
     }
 
     void InitFloor(int floor)
@@ -33,6 +33,12 @@ public class DangeonController : SerializedMonoBehaviour
             Destroy(turnController.gameObject);
             InitFloor(0);
         });
+    }
+
+    public void Enter()
+    {
+        InitFloor(0);
+        mapDebugView.SetActive(true);
     }
 
 

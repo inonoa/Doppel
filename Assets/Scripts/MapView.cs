@@ -47,6 +47,8 @@ public class MapView : MonoBehaviour, IMapView
         }
     }
 
+    public void SetActive(bool active) => gameObject.SetActive(active);
+
     void Update()
     {
         Vector2Int[] view = status.hero.GetView()

@@ -7,6 +7,8 @@ using UniRx;
 
 public class InstructionSceneController : MonoBehaviour
 {
+    [SerializeField] DangeonController dangeonController;
+
     InstructionSceneView view;
 
     bool canClick = false;
@@ -30,7 +32,7 @@ public class InstructionSceneController : MonoBehaviour
         view.Exit()
         .Subscribe(_ => 
         {
-            print("a");
+            dangeonController.Enter();
         });
     }
 

@@ -90,4 +90,5 @@ public interface IUnderTurns
 public interface IMapView
 {
     void SetStatus(FloorStatus status);
+    void SetActive(bool active);
 }
