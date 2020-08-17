@@ -7,8 +7,11 @@ using UniRx;
 
 public class StartSceneController : MonoBehaviour
 {
+    [SerializeField] InstructionSceneController instructionScene;
+
     StartSceneView view;
 
+    //入力ってView側で処理するのが自然な気がしてきた
     bool canClick = false;
 
     void Start()
@@ -38,7 +41,7 @@ public class StartSceneController : MonoBehaviour
             view.Exit()
             .Subscribe(_ => 
             {
-                print("説明画面にいきたい");
+                instructionScene.Enter();
             });
         }
     }
