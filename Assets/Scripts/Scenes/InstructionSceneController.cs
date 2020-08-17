@@ -9,6 +9,8 @@ public class InstructionSceneController : MonoBehaviour
 {
     InstructionSceneView view;
 
+    bool canClick = false;
+
     void Start()
     {
         view = GetComponent<InstructionSceneView>();
@@ -19,7 +21,7 @@ public class InstructionSceneController : MonoBehaviour
         view.Enter()
         .Subscribe(_ => 
         {
-            print("a");
+            canClick = true;
         });
     }
     
@@ -35,8 +37,9 @@ public class InstructionSceneController : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(canClick && Input.GetMouseButtonDown(0))
         {
+            canClick = false;
             Exit();
         }
     }
