@@ -23,6 +23,8 @@ public class TurnController : SerializedMonoBehaviour
     Subject<Unit> _Died = new Subject<Unit>();
     public IObservable<Unit> Died => _Died;
 
+    public bool AcceptsInput{ get; set; } = false;
+
     public void Init(int floor, Text dieText, IMapView debugView, CameraMover cameraMover)
     {
         this.dieText = dieText;
@@ -37,10 +39,12 @@ public class TurnController : SerializedMonoBehaviour
 
     HeroMover.Direction? GetInput()
     {
-        if(Input.GetKeyDown(KeyCode.RightArrow)) return HeroMover.Direction.R;
-        if(Input.GetKeyDown(KeyCode.LeftArrow )) return HeroMover.Direction.L;
-        if(Input.GetKeyDown(KeyCode.UpArrow   )) return HeroMover.Direction.U;
-        if(Input.GetKeyDown(KeyCode.DownArrow )) return HeroMover.Direction.D;
+        if(! AcceptsInput) return null;
+        
+        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) return HeroMover.Direction.R;
+        if(Input.GetKeyDown(KeyCode.LeftArrow ) || Input.GetKeyDown(KeyCode.A)) return HeroMover.Direction.L;
+        if(Input.GetKeyDown(KeyCode.UpArrow   ) || Input.GetKeyDown(KeyCode.W)) return HeroMover.Direction.U;
+        if(Input.GetKeyDown(KeyCode.DownArrow ) || Input.GetKeyDown(KeyCode.S)) return HeroMover.Direction.D;
         return null;
     }
 

@@ -28,12 +28,14 @@ public class DangeonController : SerializedMonoBehaviour
         currentTurnController.Init(floor, dieText, mapDebugView, cameraMover);
         currentTurnController.NextFloor.Subscribe(_ =>
         {
+            currentTurnController.AcceptsInput = false;
             GoDownstairs(floor + 1);
         });
         currentTurnController.Died.Subscribe(_ => 
         {
             Destroy(currentTurnController.gameObject);
             InitFloor(0);
+            currentTurnController.AcceptsInput = true;
         });
     }
 
@@ -41,6 +43,7 @@ public class DangeonController : SerializedMonoBehaviour
     {
         InitFloor(0);
         mapDebugView.SetActive(true);
+        currentTurnController.AcceptsInput = true;
     }
 
     void GoDownstairs(int nextFloor)
@@ -50,7 +53,11 @@ public class DangeonController : SerializedMonoBehaviour
         {
             Destroy(currentTurnController.gameObject);
             InitFloor(nextFloor);
-            DOVirtual.DelayedCall(1f, () => transitionView.Exit());
+            DOVirtual.DelayedCall(1f, () => 
+            {
+                transitionView.Exit()
+                .Subscribe(__ => currentTurnController.AcceptsInput = true);
+            });
         });
     }
 
