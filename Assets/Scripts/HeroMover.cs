@@ -39,14 +39,8 @@ public class HeroMover : MonoBehaviour, IUnderTurns, IOnMap
         this.status = status;
         this.direction = (Direction) Random.Range(0, 3);
         this.view.Init(this, status, viewParams, this.direction);
-        
-        foreach(int y in new[] {PosOnMap.y - 1, PosOnMap.y, PosOnMap.y + 1})
-        {
-            foreach(int x in new[] {PosOnMap.x - 1, PosOnMap.x, PosOnMap.x + 1})
-            {
-                status.seen[y][x] = true;
-            }
-        }
+
+        SeenTilesCheck();
     }
 
     public bool CanMove(Direction dir)
@@ -85,19 +79,43 @@ public class HeroMover : MonoBehaviour, IUnderTurns, IOnMap
         _ActionCompleted = false;
         this.direction = dir;
 
-        foreach(int y in new[] {PosOnMap.y - 1, PosOnMap.y, PosOnMap.y + 1})
-        {
-            foreach(int x in new[] {PosOnMap.x - 1, PosOnMap.x, PosOnMap.x + 1})
-            {
-                status.seen[y][x] = true;
-            }
-        }
+        SeenTilesCheck();
 
         view.Move(dir)
         .Subscribe(_ =>
         {
             _ActionCompleted = true;
         });
+    }
+
+    void SeenTilesCheck()
+    {
+        GridUnit currentRoomGrid = status.map.Grids.FirstOrDefault(grid => 
+        {
+            bool xInside = grid.Room.Left <= PosOnMap.x && PosOnMap.x <= grid.Room.Right;
+            bool yInside = grid.Room.Up   <= PosOnMap.y && PosOnMap.y <= grid.Room.Down;
+            return xInside && yInside;
+        });
+        if(currentRoomGrid != null)
+        {
+            for(int y = currentRoomGrid.Room.Up - 1; y <= currentRoomGrid.Room.Down + 1; y ++)
+            {
+                for(int x = currentRoomGrid.Room.Left - 1; x <= currentRoomGrid.Room.Right + 1; x ++)
+                {
+                    status.seen[y][x] = true;
+                }
+            }
+        }
+        else
+        {
+            foreach(int y in new[] {PosOnMap.y - 1, PosOnMap.y, PosOnMap.y + 1})
+            {
+                foreach(int x in new[] {PosOnMap.x - 1, PosOnMap.x, PosOnMap.x + 1})
+                {
+                    status.seen[y][x] = true;
+                }
+            }
+        }
     }
 
 

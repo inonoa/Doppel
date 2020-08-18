@@ -23,6 +23,8 @@ public class MapGenerator : ScriptableObject
         CombineGrids(divided);
         CombineGrids(divided);
 
+        map.grids = divided.ToList();
+
         HashSet<Room> rooms = new HashSet<Room>();
         
         foreach(GridUnit gridUnit in divided)
