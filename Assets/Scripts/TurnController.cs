@@ -15,7 +15,6 @@ public class TurnController : SerializedMonoBehaviour
     IMapView debugView;
     [SerializeField] IMapView view;
     [SerializeField] ViewParams viewParams;
-    Text dieText;
 
     Subject<Unit> _NextFloor = new Subject<Unit>();
     public IObservable<Unit> NextFloor => _NextFloor;
@@ -25,9 +24,8 @@ public class TurnController : SerializedMonoBehaviour
 
     public bool AcceptsInput{ get; set; } = false;
 
-    public void Init(int floor, Text dieText, IMapView debugView, CameraMover cameraMover)
+    public void Init(int floor, IMapView debugView, CameraMover cameraMover)
     {
-        this.dieText = dieText;
         this.debugView = debugView;
         status = floorGenerator.Generate(floor, viewParams);
         this.debugView.SetStatus(status);
@@ -40,7 +38,7 @@ public class TurnController : SerializedMonoBehaviour
     HeroMover.Direction? GetInput()
     {
         if(! AcceptsInput) return null;
-        
+
         if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) return HeroMover.Direction.R;
         if(Input.GetKeyDown(KeyCode.LeftArrow ) || Input.GetKeyDown(KeyCode.A)) return HeroMover.Direction.L;
         if(Input.GetKeyDown(KeyCode.UpArrow   ) || Input.GetKeyDown(KeyCode.W)) return HeroMover.Direction.U;
@@ -71,8 +69,6 @@ public class TurnController : SerializedMonoBehaviour
 
             if(status.hero.GetView().Any(pos => status.doppels.Any(dp => pos == dp.PosOnMap)))
             {
-                dieText.gameObject.SetActive(true);
-                DOVirtual.DelayedCall(1f, () => dieText.gameObject.SetActive(false));
                 _Died.OnNext(Unit.Default);
                 yield break;
             }

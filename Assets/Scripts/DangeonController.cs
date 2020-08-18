@@ -11,21 +11,20 @@ public class DangeonController : SerializedMonoBehaviour
 {
     [SerializeField] TurnController turnControllerPrefab;
     TurnController currentTurnController;
-    [SerializeField] Text dieText;
     [SerializeField] IMapView mapDebugView;
     [SerializeField] CameraMover cameraMover;
     [SerializeField] TransitionView transitionView;
+    [SerializeField] DeathView deathView;
 
     void Start()
     {
-        dieText.gameObject.SetActive(false);
         mapDebugView.SetActive(false);
     }
 
     void InitFloor(int floor)
     {
         currentTurnController = Instantiate(turnControllerPrefab);
-        currentTurnController.Init(floor, dieText, mapDebugView, cameraMover);
+        currentTurnController.Init(floor, mapDebugView, cameraMover);
         currentTurnController.NextFloor.Subscribe(_ =>
         {
             currentTurnController.AcceptsInput = false;
@@ -33,9 +32,17 @@ public class DangeonController : SerializedMonoBehaviour
         });
         currentTurnController.Died.Subscribe(_ => 
         {
-            Destroy(currentTurnController.gameObject);
-            InitFloor(0);
-            currentTurnController.AcceptsInput = true;
+            deathView.Enter()
+            .Subscribe(__ =>
+            {
+                Destroy(currentTurnController.gameObject);
+                InitFloor(0);
+                DOVirtual.DelayedCall(1f,() =>
+                {
+                    deathView.Exit()
+                    .Subscribe(___ => currentTurnController.AcceptsInput = true );
+                });
+            });
         });
     }
 
