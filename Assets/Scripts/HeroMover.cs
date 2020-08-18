@@ -39,6 +39,14 @@ public class HeroMover : MonoBehaviour, IUnderTurns, IOnMap
         this.status = status;
         this.direction = (Direction) Random.Range(0, 3);
         this.view.Init(this, status, viewParams, this.direction);
+        
+        foreach(int y in new[] {PosOnMap.y - 1, PosOnMap.y, PosOnMap.y + 1})
+        {
+            foreach(int x in new[] {PosOnMap.x - 1, PosOnMap.x, PosOnMap.x + 1})
+            {
+                status.seen[y][x] = true;
+            }
+        }
     }
 
     public bool CanMove(Direction dir)
@@ -76,6 +84,14 @@ public class HeroMover : MonoBehaviour, IUnderTurns, IOnMap
         PosOnMap += ToVec(dir);
         _ActionCompleted = false;
         this.direction = dir;
+
+        foreach(int y in new[] {PosOnMap.y - 1, PosOnMap.y, PosOnMap.y + 1})
+        {
+            foreach(int x in new[] {PosOnMap.x - 1, PosOnMap.x, PosOnMap.x + 1})
+            {
+                status.seen[y][x] = true;
+            }
+        }
 
         view.Move(dir)
         .Subscribe(_ =>

@@ -39,8 +39,8 @@ public class MapDebugView : MonoBehaviour, IMapView
     {
         switch (tile)
         {
-        case TileStatus.Aisle:     return "  ";
-        case TileStatus.RoomFloor: return "  ";
+        case TileStatus.Aisle:     return "_ ";
+        case TileStatus.RoomFloor: return "_ ";
         case TileStatus.Stair:     return "O ";
         case TileStatus.Wall:      return "[]";
 
@@ -90,7 +90,15 @@ public class MapDebugView : MonoBehaviour, IMapView
             //mapStr.Append(i.ToString("00"));
             for(int j = 0; j < tiles[i].Length; j++)
             {
-                mapStr.Append(ToDebugStr(tiles[i][j]));
+                if(new[]{ TileStatus.Doppel, TileStatus.Hero, TileStatus.HeroView }
+                   .Contains(tiles[i][j]))
+                {
+                    mapStr.Append(ToDebugStr(tiles[i][j]));
+                }
+                else
+                {
+                    mapStr.Append(status.seen[i][j] ? ToDebugStr(tiles[i][j]) : "  ");
+                }
             }
             mapStr.Append("\n");
         }
