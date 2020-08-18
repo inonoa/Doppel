@@ -39,16 +39,16 @@ public class MapDebugView : MonoBehaviour, IMapView
     {
         switch (tile)
         {
-        case TileStatus.Aisle:     return "_ ";
+        case TileStatus.Aisle:     return "  ";
         case TileStatus.RoomFloor: return "  ";
-        case TileStatus.Stair:     return "L ";
-        case TileStatus.Wall:      return "W ";
+        case TileStatus.Stair:     return "O ";
+        case TileStatus.Wall:      return "[]";
 
         case TileStatus.Hero:     return Colored("P ", heroColor);
-        case TileStatus.HeroView: return Colored("X ", heroColor);
+        case TileStatus.HeroView: return Colored("x ", heroColor);
         case TileStatus.Doppel:   return Colored("D ", doppelColor);
 
-        default: return Colored("XX", Color.red);
+        default: return Colored("??", Color.red);
         }
     }
 
@@ -77,17 +77,17 @@ public class MapDebugView : MonoBehaviour, IMapView
     {
         var tiles = ToTiles(status);
 
-        StringBuilder mapStr = new StringBuilder("  ");
+        StringBuilder mapStr = new StringBuilder("");
 
-        for(int i = 0; i < tiles[0].Length; i++)
-        {
-            mapStr.Append(i.ToString("00"));
-        }
-        mapStr.Append("\n");
+        // for(int i = 0; i < tiles[0].Length; i++)
+        // {
+        //     mapStr.Append(i.ToString("00"));
+        // }
+        // mapStr.Append("\n");
 
         for(int i = 0; i < tiles.Length; i++)
         {
-            mapStr.Append(i.ToString("00"));
+            //mapStr.Append(i.ToString("00"));
             for(int j = 0; j < tiles[i].Length; j++)
             {
                 mapStr.Append(ToDebugStr(tiles[i][j]));
