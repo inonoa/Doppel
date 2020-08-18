@@ -9,6 +9,7 @@ public class MapView : MonoBehaviour, IMapView
     [SerializeField] MeshFilter wallPrefab;
     [SerializeField] MeshFilter floorPrefab;
     [SerializeField] float floorY = -0.5f;
+    [SerializeField] GameObject stairPrefab;
     [SerializeField] float _TileSize = 1;
     public float TileSize => _TileSize;
     [SerializeField] Color herVviewColor = new Color(0.2f, 0.2f, 0.2f, 1);
@@ -40,9 +41,18 @@ public class MapView : MonoBehaviour, IMapView
                     wall.transform.localPosition = leftPosition + j * new Vector3(_TileSize, 0, 0);
                 }
 
-                MeshFilter floor = Instantiate(floorPrefab, row.transform);
-                floor.transform.localPosition = new Vector3(0, floorY, 0) + leftPosition + j * new Vector3(_TileSize, 0, 0);
-                floorRenderers[i][j] = floor.GetComponent<MeshRenderer>();
+                if(status.map.Tiles[i][j] == TileType.Stair)
+                {
+                    GameObject stair = Instantiate(stairPrefab, row.transform);
+                    stair.transform.localPosition = new Vector3(0, floorY, 0) + leftPosition + j * new Vector3(_TileSize, 0, 0);
+                    floorRenderers[i][j] = stair.GetComponentInChildren<MeshRenderer>();
+                }
+                else
+                {
+                    MeshFilter floor = Instantiate(floorPrefab, row.transform);
+                    floor.transform.localPosition = new Vector3(0, floorY, 0) + leftPosition + j * new Vector3(_TileSize, 0, 0);
+                    floorRenderers[i][j] = floor.GetComponent<MeshRenderer>();
+                }
             }
         }
     }

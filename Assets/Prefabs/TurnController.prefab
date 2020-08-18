@@ -48,7 +48,10 @@ MonoBehaviour:
   floorPrefab: {fileID: 126422761162870953, guid: a68e0a261c463664e992519dbe34db8b,
     type: 3}
   floorY: -0.5
+  stairPrefab: {fileID: 6749468477402929624, guid: ad77db36c4048bf42bef940f60315ade,
+    type: 3}
   _TileSize: 1
+  herVviewColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
 --- !u!1 &8656631333441409714
 GameObject:
   m_ObjectHideFlags: 0
