@@ -21,6 +21,6 @@ public class CameraMover : MonoBehaviour
 
     void Update()
     {
-        if(status != null) transform.position = status.hero.transform.position + offset;
+        if(status != null && status.hero != null && status.hero.enabled) transform.position = status.hero.transform.position + offset;
     }
 }

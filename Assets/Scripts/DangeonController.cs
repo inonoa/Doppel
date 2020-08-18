@@ -5,13 +5,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using UniRx;
+using DG.Tweening;
 
 public class DangeonController : SerializedMonoBehaviour
 {
     [SerializeField] TurnController turnControllerPrefab;
+    TurnController currentTurnController;
     [SerializeField] Text dieText;
     [SerializeField] IMapView mapDebugView;
     [SerializeField] CameraMover cameraMover;
+    [SerializeField] TransitionView transitionView;
 
     void Start()
     {
@@ -21,16 +24,16 @@ public class DangeonController : SerializedMonoBehaviour
 
     void InitFloor(int floor)
     {
-        var turnController = Instantiate(turnControllerPrefab);
-        turnController.Init(floor, dieText, mapDebugView, cameraMover);
-        turnController.NextFloor.Subscribe(_ =>
+        currentTurnController = Instantiate(turnControllerPrefab);
+        currentTurnController.Init(floor, dieText, mapDebugView, cameraMover);
+        currentTurnController.NextFloor.Subscribe(_ =>
         {
-            Destroy(turnController.gameObject);
-            InitFloor(floor + 1);
+            Destroy(currentTurnController.gameObject);
+            GoDownstairs(floor + 1);
         });
-        turnController.Died.Subscribe(_ => 
+        currentTurnController.Died.Subscribe(_ => 
         {
-            Destroy(turnController.gameObject);
+            Destroy(currentTurnController.gameObject);
             InitFloor(0);
         });
     }
@@ -39,6 +42,16 @@ public class DangeonController : SerializedMonoBehaviour
     {
         InitFloor(0);
         mapDebugView.SetActive(true);
+    }
+
+    void GoDownstairs(int nextFloor)
+    {
+        transitionView.Enter()
+        .Subscribe(_ => 
+        {
+            InitFloor(nextFloor);
+            DOVirtual.DelayedCall(1f, () => transitionView.Exit());
+        });
     }
 
 
