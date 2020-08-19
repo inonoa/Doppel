@@ -14,7 +14,7 @@ public class DangeonController : SerializedMonoBehaviour
     [SerializeField] IMapView mapDebugView;
     [SerializeField] CameraMover cameraMover;
     [SerializeField] TransitionView transitionView;
-    [SerializeField] DeathView deathView;
+    [SerializeField] DeathSceneController deathSceneController;
 
     void Start()
     {
@@ -32,16 +32,10 @@ public class DangeonController : SerializedMonoBehaviour
         });
         currentTurnController.Died.Subscribe(_ => 
         {
-            deathView.Enter()
+            deathSceneController.Enter(floor)
             .Subscribe(__ =>
             {
                 Destroy(currentTurnController.gameObject);
-                InitFloor(0);
-                DOVirtual.DelayedCall(1f,() =>
-                {
-                    deathView.Exit()
-                    .Subscribe(___ => currentTurnController.AcceptsInput = true );
-                });
             });
         });
     }
