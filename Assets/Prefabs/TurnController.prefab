@@ -111,8 +111,8 @@ MonoBehaviour:
   doppelPrefab: {fileID: 2111620620849629199, guid: 895e479f56908134d91aa29908d2f77b,
     type: 3}
   initialNumDoppels:
-    paramOn0F: 3
-    paramOn100F: 10
+    paramOn0F: 5
+    paramOn100F: 50
 --- !u!1 &8656631334222042196
 GameObject:
   m_ObjectHideFlags: 0

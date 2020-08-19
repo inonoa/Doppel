@@ -17,7 +17,7 @@ public class HeroView : MonoBehaviour
         Subject<Unit> finished = new Subject<Unit>();
         transform.DOLocalMove(
             Pos(self, status, params_.TileSize),
-            0.5f
+            0.4f
         )
         .SetEase(Ease.InOutSine)
         .onComplete += () => finished.OnNext(Unit.Default);
