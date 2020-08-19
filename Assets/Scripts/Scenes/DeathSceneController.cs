@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using DG.Tweening;
+using UnityEngine.Networking;
+using System.Runtime.InteropServices;
 
 public class DeathSceneController : MonoBehaviour
 {
@@ -15,6 +17,10 @@ public class DeathSceneController : MonoBehaviour
     bool canTweet = false;
 
     int lastFloor;
+
+#if UNITY_WEBGL
+    [DllImport("__Internal")] private static extern void OpenNewWindow(string url);
+#endif
 
     public IObservable<Unit> Enter(int floor)
     {
@@ -34,8 +40,15 @@ public class DeathSceneController : MonoBehaviour
     void Tweet()
     {
         string txt = tweetText.Replace("[floor]", lastFloor.ToString());
+        string url = "https://twitter.com/intent/tweet?text=" 
+                     + UnityWebRequest.EscapeURL(txt);
 
         //ひっぱってくる
+#if UNITY_WEBGL && !UNITY_EDITOR
+        OpenNewWindow(url);
+#else
+        Application.OpenURL(url);
+#endif
     }
 
     void Start()
